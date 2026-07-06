@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - PlaceFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75 py-4 animate slideIn">
+    <div class="col-lg-10 col-md-12">
+        <div class="card p-0 overflow-hidden shadow-lg border-0">
+            <div class="row g-0">
+                <!-- Highlight Column (Left) -->
+                <div class="col-md-5 text-white d-none d-md-flex flex-column justify-content-center p-5 text-start" style="background: linear-gradient(135deg, var(--primary) 0%, #312E81 100%) !important;">
+                    <div class="mb-5 text-center">
+                        <span class="display-3">🚀</span>
+                    </div>
+                    <h3 class="fw-bold tracking-tight text-white mb-4">Placement Readiness</h3>
+                    
+                    <div class="d-flex align-items-start gap-3 mb-4">
+                        <div class="fs-4">📊</div>
+                        <div>
+                            <h6 class="fw-bold mb-1 text-white">Pipeline Tracking</h6>
+                            <p class="text-white-50 small mb-0">Follow applications from application to final offer.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start gap-3 mb-4">
+                        <div class="fs-4">🎯</div>
+                        <div>
+                            <h6 class="fw-bold mb-1 text-white">Eligibility Engine</h6>
+                            <p class="text-white-50 small mb-0">Calculate academic matching percentages instantly.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="fs-4">🤖</div>
+                        <div>
+                            <h6 class="fw-bold mb-1 text-white">AI Prep Advice</h6>
+                            <p class="text-white-50 small mb-0">Generate tailormade interview topics in seconds.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Form Column (Right) -->
+                <div class="col-md-7 p-5">
+                    <div class="mb-4">
+                        <h3 class="fw-bold text-dark mb-1">Create Account</h3>
+                        <p class="text-muted small">Register to track applications and generate custom preparation insights</p>
+                    </div>
+
+                    <form method="POST" action="/signup">
+                        <!-- Section 1: Credentials -->
+                        <h5 class="fw-bold text-indigo mb-3 border-bottom pb-2">🔑 Account Details</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="username" class="form-label">Username *</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="e.g. harshita" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="password" class="form-label">Password *</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Create a strong password" required>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Student Placement Profile -->
+                        <div class="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
+                            <h5 class="fw-bold text-indigo mb-0">🎓 Academic & Placement Profile</h5>
+                            <span class="badge bg-light text-secondary border fw-semibold">Optional</span>
+                        </div>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="full_name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="First Last">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cgpa" class="form-label">Current CGPA</label>
+                                <input type="number" step="0.01" min="0" max="10" class="form-control" id="cgpa" name="cgpa" placeholder="e.g. 8.5">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="tenth_percentage" class="form-label">10th Percentage (%)</label>
+                                <input type="number" step="0.1" min="0" max="100" class="form-control" id="tenth_percentage" name="tenth_percentage" placeholder="e.g. 92.4">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="twelfth_percentage" class="form-label">12th Percentage (%)</label>
+                                <input type="number" step="0.1" min="0" max="100" class="form-control" id="twelfth_percentage" name="twelfth_percentage" placeholder="e.g. 89.5">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="backlog_count" class="form-label">Active Backlogs</label>
+                                <input type="number" min="0" class="form-control" id="backlog_count" name="backlog_count" placeholder="0">
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="skills" class="form-label">Skills</label>
+                                <input type="text" class="form-control" id="skills" name="skills" placeholder="e.g. Python, Flask, SQL, REST API, JavaScript">
+                                <div class="form-text small text-muted">Enter skills separated by commas.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="preferred_roles" class="form-label">Preferred Roles</label>
+                                <input type="text" class="form-control" id="preferred_roles" name="preferred_roles" placeholder="e.g. Software Engineer, Backend Dev">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location_preference" class="form-label">Location Preference</label>
+                                <input type="text" class="form-control" id="location_preference" name="location_preference" placeholder="e.g. Bengaluru, Remote">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0 small text-muted">Already have an account? <a href="/login" class="text-indigo fw-bold text-decoration-none">Sign in here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

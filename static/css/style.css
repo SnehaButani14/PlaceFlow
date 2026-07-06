@@ -1,0 +1,509 @@
+:root {
+    --primary: #4F46E5;
+    --primary-hover: #4338CA;
+    --primary-light: #EEF2FF;
+    --success: #10B981;
+    --success-light: #ECFDF5;
+    --warning: #F59E0B;
+    --warning-light: #FFFBEB;
+    --danger: #EF4444;
+    --danger-light: #FEF2F2;
+    --slate-50: #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-500: #64748B;
+    --slate-700: #334155;
+    --slate-900: #0F172A;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+/* Global resets & typography */
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--slate-50);
+    color: var(--slate-900);
+}
+
+/* Text Highlights */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary), #818CF8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+.text-indigo, .text-primary {
+    color: var(--primary) !important;
+}
+
+.bg-indigo, .bg-primary {
+    background-color: var(--primary) !important;
+}
+
+/* Navbar customizations */
+.navbar-custom {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid var(--slate-200);
+    padding: 0.75rem 0;
+    z-index: 1020;
+}
+
+.brand-logo-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.brand-logo-mark:hover {
+    transform: scale(1.05) rotate(-3deg);
+}
+
+.brand-logo-text {
+    font-size: 1.15rem;
+    letter-spacing: -0.03em;
+}
+
+.navbar-custom .nav-link {
+    color: var(--slate-500);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease-in-out;
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.avatar-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 1.5px var(--slate-200), var(--shadow);
+    transition: all 0.2s ease-in-out;
+}
+
+.avatar-circle:hover {
+    box-shadow: 0 0 0 1.5px var(--primary), var(--shadow);
+    transform: translateY(-1px);
+}
+
+/* Custom Dropdown Overrides */
+.dropdown-menu {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--slate-200) !important;
+    box-shadow: var(--shadow-md) !important;
+    padding: 0.5rem !important;
+}
+
+.dropdown-header {
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: var(--slate-500) !important;
+    padding: 0.5rem 0.75rem !important;
+}
+
+.dropdown-item {
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    color: var(--slate-700) !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 0.5rem 0.75rem !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-light) !important;
+    color: var(--primary) !important;
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: var(--danger-light) !important;
+    color: var(--danger) !important;
+}
+
+/* Global Cards */
+.card {
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: 1px solid var(--slate-200);
+}
+
+/* Landing Page Illustrations CSS */
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+.saas-graphic-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 320px;
+}
+
+.saas-card {
+    position: absolute;
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    border: 1px solid var(--slate-200);
+}
+
+.card-main {
+    top: 50px;
+    left: 50px;
+    width: 260px;
+    height: 180px;
+    z-index: 2;
+    transform: rotate(-3deg);
+}
+
+.card-match {
+    bottom: 20px;
+    right: 10px;
+    width: 220px;
+    z-index: 3;
+    transform: rotate(3deg);
+}
+
+.card-stats {
+    top: 10px;
+    right: 30px;
+    width: 140px;
+    text-align: center;
+    z-index: 1;
+    transform: translateY(10px);
+}
+
+.saas-card .stat-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.1;
+}
+
+.saas-card .stat-label {
+    font-size: 0.75rem;
+    color: var(--slate-500);
+    font-weight: 600;
+}
+
+/* Forms & Inputs styling */
+.form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--slate-700);
+}
+
+.form-control, .form-select {
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.9rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #818CF8;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    outline: none;
+}
+
+/* Buttons customization */
+.btn {
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* Custom Table Styles */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--slate-500);
+    border-bottom: 1.5px solid var(--slate-200);
+    padding: 0.75rem 1rem !important;
+}
+
+.table td {
+    padding: 0.85rem 1rem !important;
+    color: var(--slate-900);
+}
+
+.table-hover tbody tr {
+    transition: background-color 0.15s;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--slate-50);
+}
+
+/* Clickable Stats Cards styling */
+.stat-card {
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent !important;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md) !important;
+}
+
+.stat-card.active-card {
+    border: 2px solid var(--primary) !important;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md) !important;
+    opacity: 1 !important;
+}
+
+/* Custom Deadline Colors */
+.text-deadline-green {
+    color: var(--success) !important;
+}
+
+.text-deadline-orange {
+    color: var(--warning) !important;
+}
+
+.text-deadline-red {
+    color: var(--danger) !important;
+}
+
+/* Professional Status Pill Badges */
+.badge-status {
+    display: inline-block;
+    padding: 0.35em 0.8em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    border-radius: 50rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.badge-applied {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.badge-interview {
+    background-color: var(--warning-light);
+    color: var(--warning);
+}
+
+.badge-selected {
+    background-color: var(--success-light);
+    color: var(--success);
+}
+
+.badge-rejected {
+    background-color: var(--danger-light);
+    color: var(--danger);
+}
+
+.badge-processing {
+    background-color: var(--slate-100);
+    color: var(--slate-500);
+}
+
+/* Progress Timeline Styling */
+.timeline-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin: 2.5rem 0;
+}
+
+.timeline-steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--slate-200);
+    z-index: 1;
+}
+
+.timeline-progress {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    height: 4px;
+    background-color: var(--primary);
+    z-index: 2;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0%;
+}
+
+.timeline-progress.rejected-line {
+    background-color: var(--danger) !important;
+}
+
+.timeline-step {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeline-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--slate-200);
+    color: var(--slate-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 4px solid #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.timeline-step.active .timeline-icon {
+    background-color: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+.timeline-step.completed .timeline-icon {
+    background-color: var(--success);
+    color: #ffffff;
+}
+
+.timeline-step.rejected .timeline-icon {
+    background-color: var(--danger);
+    color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+.timeline-label {
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--slate-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.timeline-step.active .timeline-label {
+    color: var(--primary);
+}
+
+.timeline-step.completed .timeline-label {
+    color: var(--success);
+}
+
+.timeline-step.rejected .timeline-label {
+    color: var(--danger);
+}
+
+/* Interview widgets and buttons */
+.interview-card {
+    background-color: #ffffff;
+    border: 1px solid var(--slate-200);
+    border-radius: var(--radius-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.interview-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md) !important;
+    border-color: var(--slate-500);
+}
+
+.btn-action-trigger {
+    background: none;
+    border: none;
+    color: var(--slate-500);
+    font-size: 1.25rem;
+    padding: 0 0.4rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+}
+
+.btn-action-trigger:hover {
+    background-color: var(--slate-100);
+    color: var(--slate-900);
+}
+
+.days-badge {
+    padding: 0.35em 0.75em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+}
+
+/* Animations helper */
+.animate {
+    animation-duration: 0.2s;
+    animation-fill-mode: both;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+    100% {
+        transform:translateY(0rem);
+        opacity: 1;
+    }
+}
+
+.slideIn {
+    animation-name: slideIn;
+}

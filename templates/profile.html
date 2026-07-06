@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}My Profile - PlaceFlow{% endblock %}
+
+{% block content %}
+<div class="row my-4">
+    <!-- Left Column: Quick Summary -->
+    <div class="col-lg-4 mb-4">
+        <div class="card text-center p-4 h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-center bg-indigo text-white rounded-circle fw-bold shadow-sm mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2.2rem;">
+                    {{ (profile.full_name or user.username)[0] | upper }}
+                </div>
+                <h4 class="fw-bold text-dark mb-1">{{ profile.full_name or 'Student Candidate' }}</h4>
+                <p class="text-muted small mb-3">@{{ user.username }}</p>
+                <div class="badge bg-light text-indigo py-2 px-3 rounded-pill fw-semibold border mb-4">
+                    🎓 Student Profile
+                </div>
+                
+                <hr class="text-secondary-subtle">
+                
+                <div class="text-start mt-3">
+                    <div class="mb-3">
+                        <span class="text-secondary small fw-semibold">Email:</span>
+                        <div class="text-dark small fw-medium">{{ user.email }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="text-secondary small fw-semibold">Account Created:</span>
+                        <div class="text-dark small">{{ user.created_at.strftime('%B %d, %Y') if user.created_at else '-' }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Edit Profile Form -->
+    <div class="col-lg-8 mb-4">
+        <div class="card p-4">
+            <div class="card-body">
+                <h4 class="fw-bold text-dark mb-4">Edit Placement Profile</h4>
+
+                <form method="POST" action="/profile">
+                    <!-- Section 1: Account Settings -->
+                    <h5 class="fw-bold text-indigo mb-3">📧 Account Settings</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control bg-light text-muted" value="{{ user.username }}" readonly title="Username cannot be changed">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Student Information -->
+                    <h5 class="fw-bold text-indigo mb-3">🎓 Academic & Placement Info</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ profile.full_name or '' }}" placeholder="Enter full name">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cgpa" class="form-label">Current CGPA</label>
+                            <input type="number" step="0.01" min="0" max="10" class="form-control" id="cgpa" name="cgpa" value="{{ profile.cgpa if profile.cgpa is not none else '' }}" placeholder="e.g. 8.5">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="tenth_percentage" class="form-label">10th Percentage (%)</label>
+                            <input type="number" step="0.1" min="0" max="100" class="form-control" id="tenth_percentage" name="tenth_percentage" value="{{ profile.tenth_percentage if profile.tenth_percentage is not none else '' }}" placeholder="e.g. 92.4">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="twelfth_percentage" class="form-label">12th Percentage (%)</label>
+                            <input type="number" step="0.1" min="0" max="100" class="form-control" id="twelfth_percentage" name="twelfth_percentage" value="{{ profile.twelfth_percentage if profile.twelfth_percentage is not none else '' }}" placeholder="e.g. 89.5">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="backlog_count" class="form-label">Active Backlogs</label>
+                            <input type="number" min="0" class="form-control" id="backlog_count" name="backlog_count" value="{{ profile.backlog_count if profile.backlog_count is not none else 0 }}">
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="skills" class="form-label">Skills (Comma-separated)</label>
+                            <input type="text" class="form-control" id="skills" name="skills" value="{{ profile.skills or '' }}" placeholder="e.g. Python, Flask, SQL, REST API, JavaScript">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="preferred_roles" class="form-label">Preferred Roles</label>
+                            <input type="text" class="form-control" id="preferred_roles" name="preferred_roles" value="{{ profile.preferred_roles or '' }}" placeholder="e.g. Software Engineer, Backend Dev">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="location_preference" class="form-label">Location Preference</label>
+                            <input type="text" class="form-control" id="location_preference" name="location_preference" value="{{ profile.location_preference or '' }}" placeholder="e.g. Bengaluru, Remote">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary px-4 py-2">
+                        Save Changes
+                    </button>
+                    <a href="/" class="btn btn-outline-secondary px-4 py-2 ms-2">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

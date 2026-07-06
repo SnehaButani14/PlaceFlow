@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - PlaceFlow{% endblock %}
+
+{% block content %}
+<div class="row mb-3 align-items-center">
+    <div class="col">
+        <h2 class="fw-bold text-dark tracking-tight">My PlaceFlow Dashboard</h2>
+    </div>
+    <div class="col text-end">
+        <a href="/add" class="btn btn-primary shadow-sm px-4 py-2">+ Add Company</a>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-4" id="stats-row"></div>
+
+<!-- Empty State -->
+<div id="empty-state" class="text-center py-5 my-5 card border-0 shadow-sm" style="display: none;">
+    <div class="card-body py-5">
+        <div class="display-1 text-muted mb-4">📋</div>
+        <h3 class="fw-bold mb-2">No Applications Yet</h3>
+        <p class="text-muted mb-4">Start tracking your placement journey.</p>
+        <a href="/add" class="btn btn-primary shadow-sm px-4 py-2">+ Add Company</a>
+    </div>
+</div>
+
+<!-- Placement Insights Section -->
+<div class="card mb-4 border-0 shadow-sm" id="insights-card">
+    <div class="card-header bg-white border-0 pt-4 pb-0">
+        <h5 class="fw-bold text-dark mb-0">📈 Placement Insights</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3 text-center" id="insights-row">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Container -->
+<div id="dashboard-main-container" style="display: none;">
+
+    <!-- Upcoming Interviews Section (Full Width, Horizontal Cards Grid) -->
+    <div class="card mb-4 border-0 shadow-sm" id="upcoming-interviews-card">
+        <div class="card-header bg-white border-0 pt-4 pb-0">
+            <h5 class="fw-bold text-dark mb-0">📅 Upcoming Interviews</h5>
+        </div>
+        <div class="card-body">
+            <div id="upcoming-interviews-list">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Search + Filter (Full Width) -->
+    <div class="card mb-4" id="search-filter-card">
+        <div class="card-body">
+            <!-- Row 1: Search + Actions -->
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-8 col-md-7">
+                    <input type="text" id="search-input" class="form-control" placeholder="🔍 Search company or role...">
+                </div>
+                <input type="hidden" id="filter-status" value="">
+                <div class="col-lg-4 col-md-5 d-flex justify-content-md-end gap-2">
+                    <button class="btn btn-outline-primary flex-fill" type="button" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
+                        ⚙️ Advanced Filters
+                    </button>
+                    <button onclick="clearFilters()" class="btn btn-outline-secondary">
+                        Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Advanced Filters (Collapsible) -->
+            <div class="collapse mt-3" id="advancedFilters">
+                <div class="row g-3">
+                    <!-- CTC Range -->
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">Min CTC (LPA)</label>
+                        <input type="number" id="filter-min-ctc" class="form-control form-control-sm" placeholder="e.g. 5" step="0.5">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">Max CTC (LPA)</label>
+                        <input type="number" id="filter-max-ctc" class="form-control form-control-sm" placeholder="e.g. 20" step="0.5">
+                    </div>
+
+                    <!-- CGPA -->
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">My CGPA (show eligible)</label>
+                        <input type="number" id="filter-my-cgpa" class="form-control form-control-sm" placeholder="e.g. 7.5" step="0.1" min="0" max="10">
+                    </div>
+
+                    <!-- Backlog -->
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">Backlog Allowed</label>
+                        <select id="filter-backlog" class="form-select form-select-sm">
+                            <option value="">Any</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+                    <!-- 10th % -->
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">My 10th % (show eligible)</label>
+                        <input type="number" id="filter-my-tenth" class="form-control form-control-sm" placeholder="e.g. 75" min="0" max="100">
+                    </div>
+
+                    <!-- 12th % -->
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted">My 12th % (show eligible)</label>
+                        <input type="number" id="filter-my-twelfth" class="form-control form-control-sm" placeholder="e.g. 75" min="0" max="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Companies Table (Full Width) -->
+    <div class="card mb-4 shadow-sm" id="table-card">
+        <div class="card-body">
+            <!-- Loading Spinner -->
+            <div id="loading-spinner" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2">Loading companies...</p>
+            </div>
+
+            <!-- Table — initially hidden -->
+            <div id="table-container" style="display:none">
+                <div id="result-count" class="text-muted small mb-3"></div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Role</th>
+                                <th>CTC</th>
+                                <th>Match Score</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                                <th style="width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="companies-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Interview Assistant Section (Full Width) -->
+    <div class="card mb-4 border-0 shadow-sm" id="ai-assistant-card">
+        <div class="card-header bg-white border-0 pt-4 pb-0">
+            <h5 class="fw-bold text-dark mb-0">🤖 AI Interview Assistant</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted small mb-3">Generate customized interview preparation questions based on company requirements.</p>
+            
+            <!-- Config Form Inputs (Always Visible) -->
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label small text-muted">Select Tracked Company</label>
+                    <select id="ai-select-company" class="form-select">
+                        <option value="">-- Enter Custom Details --</option>
+                        <!-- Dynamically populated via JS -->
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small text-muted">Company Name *</label>
+                    <input type="text" id="ai-company-name" class="form-control" placeholder="e.g. Google">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted">Job Role *</label>
+                    <input type="text" id="ai-role" class="form-control" placeholder="e.g. SDE">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted">CTC (LPA)</label>
+                    <input type="number" id="ai-ctc" class="form-control" placeholder="e.g. 15" step="0.1">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted">Status</label>
+                    <select id="ai-status" class="form-select">
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Selected">Selected</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Pending">Processing</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-3" id="ai-action-btn-container">
+                <button class="btn btn-primary" id="ai-generate-btn" onclick="generateAIQuestions()">
+                    ✨ Generate Interview Questions
+                </button>
+            </div>
+
+            <!-- AI Loading State -->
+            <div id="ai-loading" class="text-center py-4 mt-3" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2 mb-0">Gemini is preparing your questions...</p>
+            </div>
+
+            <!-- AI Error State -->
+            <div id="ai-error" class="alert alert-danger mt-3" style="display: none;"></div>
+
+            <!-- AI Initial Empty State (Visible when no questions generated) -->
+            <div id="ai-empty-state" class="text-center py-4 mt-3 border rounded-3 bg-light">
+                <div class="fs-2 mb-2">🤖</div>
+                <h6 class="fw-bold text-dark mb-1">AI Interview Assistant</h6>
+                <p class="text-muted small mb-0">Generate personalized interview questions based on company, role, and package.</p>
+            </div>
+
+            <!-- AI Output Content Container (Initially Hidden) -->
+            <div id="ai-output-container" class="mt-4" style="display: none;">
+                <!-- Main Result Header Card -->
+                <div class="card border-0 shadow-sm mb-4" style="background-color: var(--slate-50); border-left: 5px solid var(--primary) !important; border-top: 1px solid var(--slate-200); border-right: 1px solid var(--slate-200); border-bottom: 1px solid var(--slate-200);">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                            <div>
+                                <span class="text-muted small fw-semibold text-uppercase" style="letter-spacing: 0.05em;">AI Interview Preparation Assistant</span>
+                                <h4 class="fw-bold text-dark mt-1 mb-1" id="ai-profile-company"></h4>
+                                <p class="text-muted mb-0 small" id="ai-profile-meta"></p>
+                            </div>
+                            <span id="ai-difficulty-badge" class="badge py-2 px-3 fs-7 rounded-pill"></span>
+                        </div>
+                        
+                        <div class="row g-3 align-items-center border-top pt-3 mt-2">
+                            <div class="col-md-6">
+                                <span class="text-muted small fw-semibold">Interview Readiness</span>
+                                <div class="d-flex align-items-center gap-2 mt-1">
+                                    <div class="progress flex-grow-1" style="height: 10px; border-radius: 5px; background-color: var(--slate-200);">
+                                        <div id="ai-readiness-bar" class="progress-bar bg-indigo" role="progressbar" style="width: 0%"></div>
+                                    </div>
+                                    <span class="fw-bold text-dark small" id="ai-readiness-percentage">0%</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-md-end d-flex justify-content-md-end gap-2 flex-wrap mt-2 mt-md-0">
+                                <button class="btn btn-sm btn-outline-primary" id="ai-regenerate-btn" onclick="generateAIQuestions()">
+                                    🔄 Generate New Questions
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" id="ai-copy-all-btn" onclick="copyAllAIQuestions()">
+                                    📋 Copy All Questions
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3 mt-2 border-top pt-3">
+                            <div class="col-md-6">
+                                <div class="small fw-semibold text-success mb-1">👍 Strengths:</div>
+                                <ul class="list-unstyled small text-muted mb-0 ps-1" id="ai-strengths-list"></ul>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="small fw-semibold text-danger mb-1">⚠️ Focus Areas:</div>
+                                <ul class="list-unstyled small text-muted mb-0 ps-1" id="ai-focus-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid Layout for Question Cards & Topics -->
+                <div class="row g-4">
+                    <!-- Left: Question Sections -->
+                    <div class="col-lg-8 col-md-12">
+                        
+                        <!-- Tech Questions Card -->
+                        <div class="card border mb-4">
+                            <div class="card-header bg-white border-0 pt-4 pb-0">
+                                <h5 class="fw-bold text-primary mb-0">💻 Technical Questions</h5>
+                            </div>
+                            <div class="card-body p-4" id="ai-tech-questions"></div>
+                        </div>
+
+                        <!-- HR Questions Card -->
+                        <div class="card border mb-4">
+                            <div class="card-header bg-white border-0 pt-4 pb-0">
+                                <h5 class="fw-bold text-info mb-0">👤 HR Questions</h5>
+                            </div>
+                            <div class="card-body p-4" id="ai-hr-questions"></div>
+                        </div>
+
+                        <!-- Project Questions Card -->
+                        <div class="card border">
+                            <div class="card-header bg-white border-0 pt-4 pb-0">
+                                <h5 class="fw-bold text-success mb-0">🚀 Project-Based Questions</h5>
+                            </div>
+                            <div class="card-body p-4" id="ai-project-questions"></div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Topics & Advice -->
+                    <div class="col-lg-4 col-md-12">
+                        
+                        <!-- Topics Card -->
+                        <div class="card border mb-4">
+                            <div class="card-header bg-white border-0 pt-4 pb-0">
+                                <h5 class="fw-bold text-dark mb-0">📚 Topics to Revise</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-wrap gap-2" id="ai-topics-chips"></div>
+                            </div>
+                        </div>
+
+                        <!-- Advice Card -->
+                        <div class="card border">
+                            <div class="card-header bg-white border-0 pt-4 pb-0">
+                                <h5 class="fw-bold text-warning mb-0">💡 Preparation Advice</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <ul class="list-unstyled small text-secondary mb-0" id="ai-advice-list"></ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-md);">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" id="modal-company-name"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary" id="modal-details-btn">View Full Details</a>
+                <button type="button" class="btn btn-warning text-dark" id="modal-edit-btn">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Toast Notification -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+    <div id="aiToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toast-body-text">
+                Questions copied successfully.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+{% endblock %}

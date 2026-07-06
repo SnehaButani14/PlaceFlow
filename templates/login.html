@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Login - PlaceFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75 py-4 animate slideIn">
+    <div class="col-lg-10">
+        <div class="card p-0 overflow-hidden shadow-lg border-0">
+            <div class="row g-0">
+                <!-- Highlight Column (Left) -->
+                <div class="col-md-6 text-white d-none d-md-flex flex-column justify-content-center p-5 text-start" style="background: linear-gradient(135deg, var(--primary) 0%, #312E81 100%) !important;">
+                    <span class="display-3 mb-4">🎯</span>
+                    <h2 class="fw-bold tracking-tight text-white mb-3">Simplify Your Placements</h2>
+                    <p class="text-white-50 mb-0">Track company applications, check requirements eligibility, and prepare for interviews using advanced AI generation tools.</p>
+                </div>
+                
+                <!-- Form Column (Right) -->
+                <div class="col-md-6 p-5">
+                    <div class="mb-4">
+                        <h3 class="fw-bold text-dark mb-1">Welcome Back</h3>
+                        <p class="text-muted small">Your Personal Placement Tracker</p>
+                    </div>
+
+                    <form method="POST" action="/login">
+                        <div class="mb-3">
+                            <label for="username_or_email" class="form-label">Username or Email</label>
+                            <input type="text" class="form-control" id="username_or_email" name="username_or_email" placeholder="Enter username or email" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            Sign In
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0 small text-muted">Don't have an account? <a href="/signup" class="text-indigo fw-bold text-decoration-none">Sign up here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
