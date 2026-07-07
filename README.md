@@ -166,17 +166,6 @@ flask run
 
 ---
 
-## Future Improvements
-
-* Resume parsing
-* Company recommendation system
-* Email reminders for deadlines
-* Interview scheduling
-* Advanced analytics dashboard
-* AI-powered placement insights
-
----
-
 ## Author
 
 Built as a placement management platform using Flask and SQLite.
